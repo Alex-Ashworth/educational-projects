@@ -1,3 +1,3 @@
-from project.cli import main
+from password_checker.cli import main
 
 raise SystemExit(main())
