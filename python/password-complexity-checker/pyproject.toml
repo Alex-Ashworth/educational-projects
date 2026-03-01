@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "password_checker"
+version = "0.1.0"
+description = "password_checker Python project."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = []
+
+[project.scripts]
+password_checker = "password_checker.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
