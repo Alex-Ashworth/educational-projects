@@ -1,5 +1,5 @@
-from .utils import is_symbol, chk_length, chk_capital, chk_number, chk_symbol
-from .config import pass_len, pass_cap, pass_num, pass_sym
+from ..utils import is_symbol, chk_length, chk_capital, chk_number, chk_symbol
+from ..config import pass_len, pass_cap, pass_num, pass_sym
 from getpass import getpass
 
 def chk_pass(password: str) -> bool:

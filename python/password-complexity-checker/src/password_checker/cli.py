@@ -1,5 +1,5 @@
 from .core import run
 
 def main() -> int:
-  run()
-  return 0
+  return 0 if run() else 1
+
