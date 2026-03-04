@@ -34,3 +34,4 @@ pip-wheel-metadata/
 Thumbs.db
 
 # Custom
+/src/password_checker/dev

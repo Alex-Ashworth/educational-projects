@@ -1,18 +1,22 @@
-from ..utils import is_symbol, chk_length, chk_capital, chk_number, chk_symbol
+from ..utils import is_symbol, chk_length, chk_capital, chk_lower, chk_number, chk_symbol
 from ..config import pass_len, pass_cap, pass_num, pass_sym
 from getpass import getpass
 
 def chk_pass(password: str) -> bool:
     if not chk_length(password):
-        print(f"\nYour password is too short. Please try again using a password longer than {pass_sym} characters. ")
+        print(f"\nYour password is too short. Please try again using a password longer than {pass_len} characters. ")
         return False
 
     if not chk_capital(password):
-        print(f"\nYour password is missing at least {pass_sym} capital letter. Please try again. ")
+        print(f"\nYour password is missing at least {pass_cap} capital letter. Please try again. ")
+        return False
+
+    if not chk_lower(password):
+        print(f"\nYour password is missing at least {pass_low} lowercase letter. Please try again. ")
         return False
 
     if not chk_number(password):
-        print(f"\nYour password is missing at least {pass_sym} number. Please try again. ")
+        print(f"\nYour password is missing at least {pass_num} number. Please try again. ")
         return False
 
     if not chk_symbol(password):
@@ -24,7 +28,7 @@ def chk_pass(password: str) -> bool:
     
 def run():
     def intro():
-        print(f"\nPlease enter a password that is {pass_len} characters in length, includes at least {pass_cap} capital letter, at least {pass_num} number, and at least {pass_sym} symbol. ($@!%&..)")
+        print(f"\nPlease enter a password that is {pass_len} characters in length, includes at least {pass_cap} capital letter, at least {pass_low} lowercase letter, at least {pass_num} number, and at least {pass_sym} symbol. ($@!%&..)")
     intro()
     PASS = getpass("\nEnter your password: ")
     

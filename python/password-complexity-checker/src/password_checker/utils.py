@@ -1,4 +1,4 @@
-from .config import pass_len, pass_cap, pass_num, pass_sym
+from .config import pass_len, pass_cap, pass_low, pass_num, pass_sym
 
 def is_symbol(char: str) -> bool:
     return not char.isalnum() and not char.isspace()
@@ -13,6 +13,14 @@ def chk_capital(password: str) -> bool:
         if char.isupper():
             tally.append(char)
     if len(tally) >= pass_cap:
+        return True
+
+def chk_lower(password: str) -> bool:
+    tally = []
+    for char in password:
+        if char.islower():
+            tally.append(char)
+    if len(tally) >= pass_low:
         return True
 
 def chk_number(password: str) -> bool:
