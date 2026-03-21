@@ -12,4 +12,7 @@ pass_sym = 1
 
 
 # Passphrase generator settings
-# gen_passphrase_len = 4
+phrase_len = 5
+
+# Pin settings
+pin_len = 8
