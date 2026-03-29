@@ -8,21 +8,22 @@ from PySide6.QtWidgets import (
     QStackedWidget,
     QLineEdit,
 )
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, QTimer
 from PySide6.QtGui import QFont
+from password_tool.config import *
+from password_tool.core.pass_generator import *
+from password_tool.core.phrase_generator import *
+from password_tool.core.pin_generator import *
 
 class MainMenuPage(QWidget):
     def __init__(self, main_window):
         super().__init__()
         self.main_window = main_window
         
-        
-
         layout = QVBoxLayout()
 
-        title = QLabel("Main Menu")
+        title = QLabel("Password Toolkit")
         title.setAlignment(Qt.AlignCenter)
-
         title.setStyleSheet("""
             QLabel {
                 font-size: 22px;
@@ -70,17 +71,37 @@ class PassPage(QWidget):
         layout = QVBoxLayout()
 
         title = QLabel("Password Generator")
-        back_btn = QPushButton("Back to the Main Menu")
+        title.setAlignment(Qt.AlignCenter)
+        title.setStyleSheet("""
+            QLabel {
+                font-size: 22px;
+                font-weight: bold;
+                color: white;
+                background-color: #2a2a2a;
+                padding: 12px;
+                margin-bottom: 10px;
+            }
+        """)
+        self.gen_btn = QPushButton("Generate Passphrase")
+        self.output = QLineEdit()
+        self.output.setAlignment(Qt.AlignCenter)
+        self.output.setReadOnly(True)
+        self.copy_btn = CopyButton(self.output)
+        back_btn = BackButton(self.main_window, self.output)
 
         layout.addWidget(title)
+        layout.addWidget(self.output)
+        layout.addWidget(self.gen_btn)
+        layout.addWidget(self.copy_btn)
         layout.addWidget(back_btn)
 
         self.setLayout(layout)
 
-        back_btn.clicked.connect(self.go_back)
+        self.gen_btn.clicked.connect(self.gen_pass)
 
-    def go_back(self):
-        self.main_window.stack.setCurrentWidget(self.main_window.main_menu)
+    def gen_pass(self):
+        password = generate_password()
+        self.output.setText(password)
 
 class PhrasePage(QWidget):
     def __init__(self, main_window):
@@ -90,17 +111,38 @@ class PhrasePage(QWidget):
         layout = QVBoxLayout()
 
         title = QLabel("Passphrase Generator")
-        back_btn = QPushButton("Back to the Main Menu")
+        title.setAlignment(Qt.AlignCenter)
+        title.setStyleSheet("""
+            QLabel {
+                font-size: 22px;
+                font-weight: bold;
+                color: white;
+                background-color: #2a2a2a;
+                padding: 12px;
+                margin-bottom: 10px;
+            }
+        """)
+        
+        self.gen_btn = QPushButton("Generate Passphrase")
+        self.output = QLineEdit()
+        self.output.setAlignment(Qt.AlignCenter)
+        self.output.setReadOnly(True)
+        self.copy_btn = CopyButton(self.output)
+        back_btn = BackButton(self.main_window, self.output)
 
         layout.addWidget(title)
+        layout.addWidget(self.output)
+        layout.addWidget(self.gen_btn)
+        layout.addWidget(self.copy_btn)
         layout.addWidget(back_btn)
 
         self.setLayout(layout)
 
-        back_btn.clicked.connect(self.go_back)
+        self.gen_btn.clicked.connect(self.gen_phrase)
 
-    def go_back(self):
-        self.main_window.stack.setCurrentWidget(self.main_window.main_menu)
+    def gen_phrase(self):
+        passphrase = generate_passphrase()
+        self.output.setText(passphrase)
 
 class PinPage(QWidget):
     def __init__(self, main_window):
@@ -110,18 +152,63 @@ class PinPage(QWidget):
         layout = QVBoxLayout()
 
         title = QLabel("Pin Generator")
-        back_btn = QPushButton("Back to the Main Menu")
+        title.setAlignment(Qt.AlignCenter)
+        title.setStyleSheet("""
+            QLabel {
+                font-size: 22px;
+                font-weight: bold;
+                color: white;
+                background-color: #2a2a2a;
+                padding: 12px;
+                margin-bottom: 10px;
+            }
+        """)
+        
+        self.gen_btn = QPushButton("Generate Pin Code")
+        self.output = QLineEdit()
+        self.output.setAlignment(Qt.AlignCenter)
+        self.output.setReadOnly(True)
+        self.copy_btn = CopyButton(self.output)
+        back_btn = BackButton(self.main_window, self.output)
 
         layout.addWidget(title)
+        layout.addWidget(self.output)
+        layout.addWidget(self.gen_btn)
+        layout.addWidget(self.copy_btn)
         layout.addWidget(back_btn)
 
         self.setLayout(layout)
 
-        back_btn.clicked.connect(self.go_back)
+        self.gen_btn.clicked.connect(self.gen_pin)
 
+
+    def gen_pin(self):
+        pin = generate_pin()
+        self.output.setText(pin)
+
+class BackButton(QPushButton):
+    def __init__(self, main_window, source_widget=None, text="Back to the Main Menu"):
+        super().__init__(text)
+        self.main_window = main_window
+        self.source_widget = source_widget
+        self.clicked.connect(self.go_back)
+    
     def go_back(self):
+        if self.source_widget is not None:
+            self.source_widget.clear()
         self.main_window.stack.setCurrentWidget(self.main_window.main_menu)
+class CopyButton(QPushButton):
+    def __init__(self, source_widget, text="Copy"):
+        super().__init__(text)
+        self.source_widget = source_widget
+        self.clicked.connect(self.copy_text)
 
+    def copy_text(self):
+        text = self.source_widget.text().strip()
+        if text:
+            QApplication.clipboard().setText(text)
+            self.setText("Copied!")
+            QTimer.singleShot(1500, lambda: self.setText("Copy"))
 class MainWindow(QWidget):
     def __init__(self):
         super().__init__()
@@ -164,7 +251,17 @@ if __name__ == "__main__":
             QPushButton:hover {
                 background-color: #2c2c2c;
             }
+
+            QLineEdit {
+                background-color: #1f1f1f;
+                color: white;
+                border: 1px solid #555555;
+                border-radius: 8px;
+                padding: 8px;
+                selection-background-color: #5a5a5a
+            }
         """)
+
     window = MainWindow()
     window.show()
 

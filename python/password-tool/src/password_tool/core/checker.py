@@ -2,6 +2,7 @@ from password_tool.utils import is_symbol, check_length, check_capital, check_lo
 from password_tool.config import pass_len, pass_cap, pass_low, pass_num, pass_sym
 from getpass import getpass
 
+# ensure password meets complexity requirements
 def check_pass(password: str) -> bool:
     if not check_length(password):
         print(f"\nYour password is too short. Please try again using a password longer than {pass_len} characters. ")
