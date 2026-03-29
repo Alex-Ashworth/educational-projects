@@ -1,4 +1,4 @@
-from .core import run
+from password_tool.core import run
 
 def main() -> int:
   return 0 if run() else 1

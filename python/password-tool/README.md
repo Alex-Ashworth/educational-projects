@@ -4,7 +4,7 @@
 ## How to use the tool:
 *Execute the script by running 
 ```bash
-python -m password_checker
+python -m password_tool
 ```
 
 #### Plan for version 1.3.0

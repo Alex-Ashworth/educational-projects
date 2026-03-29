@@ -1,4 +1,4 @@
-from password_checker.config import pass_len, pass_cap, pass_low, pass_num, pass_sym
+from password_tool.config import pass_len, pass_cap, pass_low, pass_num, pass_sym
 import secrets
 import string
 
@@ -12,12 +12,6 @@ def generate_password(min_len=pass_len, min_low=pass_low, min_cap=pass_cap, min_
     symbols = "!@#$%^&*" 
     all_chars = lower + upper + digits + symbols
 
-#    chars = [
-#        secrets.choice(lower),
-#        secrets.choice(upper),
-#        secrets.choice(digits),
-#        secrets.choice(symbols)
-#    ]
     password = ''.join(secrets.choice(all_chars) for i in range(min_len))
     print(password)
 

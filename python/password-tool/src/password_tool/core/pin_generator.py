@@ -1,5 +1,5 @@
 import secrets
-from password_checker.config import pin_len
+from password_tool.config import pin_len
 
 def generate_pin(pin_len = pin_len):
     digits = '0123456789'
