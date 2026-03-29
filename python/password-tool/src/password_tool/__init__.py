@@ -1,4 +1,4 @@
-from .core import run
+from .core.checker import run
 
 __version__ = "1.0.0"
 
