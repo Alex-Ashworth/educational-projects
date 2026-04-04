@@ -5,8 +5,10 @@ from PySide6.QtWidgets import (
     QLabel,
     QPushButton,
     QVBoxLayout,
+    QHBoxLayout,
     QStackedWidget,
     QLineEdit,
+    QSpinBox,
 )
 from PySide6.QtCore import Qt, QTimer
 from PySide6.QtGui import QFont
@@ -69,6 +71,7 @@ class PassPage(QWidget):
         self.main_window = main_window
         
         layout = QVBoxLayout()
+        button_row = QHBoxLayout()
 
         title = QLabel("Password Generator")
         title.setAlignment(Qt.AlignCenter)
@@ -82,7 +85,7 @@ class PassPage(QWidget):
                 margin-bottom: 10px;
             }
         """)
-        self.gen_btn = QPushButton("Generate Passphrase")
+        self.gen_btn = QPushButton("Generate Password")
         self.output = QLineEdit()
         self.output.setAlignment(Qt.AlignCenter)
         self.output.setReadOnly(True)
@@ -91,8 +94,9 @@ class PassPage(QWidget):
 
         layout.addWidget(title)
         layout.addWidget(self.output)
-        layout.addWidget(self.gen_btn)
-        layout.addWidget(self.copy_btn)
+        layout.addLayout(button_row)
+        button_row.addWidget(self.gen_btn, 3)
+        button_row.addWidget(self.copy_btn, 1)
         layout.addWidget(back_btn)
 
         self.setLayout(layout)
@@ -109,6 +113,7 @@ class PhrasePage(QWidget):
         self.main_window = main_window
         
         layout = QVBoxLayout()
+        button_row = QHBoxLayout()
 
         title = QLabel("Passphrase Generator")
         title.setAlignment(Qt.AlignCenter)
@@ -132,8 +137,9 @@ class PhrasePage(QWidget):
 
         layout.addWidget(title)
         layout.addWidget(self.output)
-        layout.addWidget(self.gen_btn)
-        layout.addWidget(self.copy_btn)
+        layout.addLayout(button_row)
+        button_row.addWidget(self.gen_btn, 3)
+        button_row.addWidget(self.copy_btn, 1)
         layout.addWidget(back_btn)
 
         self.setLayout(layout)
@@ -150,6 +156,7 @@ class PinPage(QWidget):
         self.main_window = main_window
         
         layout = QVBoxLayout()
+        button_row = QHBoxLayout()
 
         title = QLabel("Pin Generator")
         title.setAlignment(Qt.AlignCenter)
@@ -170,11 +177,17 @@ class PinPage(QWidget):
         self.output.setReadOnly(True)
         self.copy_btn = CopyButton(self.output)
         back_btn = BackButton(self.main_window, self.output)
+        self.length_box = QSpinBox()
+        self.length_box.setRange(1, 16)
+        self.length_box.setValue(6)
+
 
         layout.addWidget(title)
         layout.addWidget(self.output)
-        layout.addWidget(self.gen_btn)
-        layout.addWidget(self.copy_btn)
+        layout.addLayout(button_row)
+        button_row.addWidget(self.gen_btn, 3)
+        button_row.addWidget(self.copy_btn, 1)
+        button_row.addWidget(self.length_box)
         layout.addWidget(back_btn)
 
         self.setLayout(layout)
@@ -214,7 +227,7 @@ class MainWindow(QWidget):
         super().__init__()
 
         self.setWindowTitle("Password Tool Shiz")
-        self.setFixedSize(400, 250)
+        self.setFixedSize(400, 280)
 
         self.stack = QStackedWidget()
 
